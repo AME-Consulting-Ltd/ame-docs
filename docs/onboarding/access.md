@@ -20,7 +20,7 @@ Used for domain management and DNS configurations.
 
 ### AME Email Access
 
-Google Workspace email account for company communication and account provisioning.
+Microsoft email account for company communication and account provisioning.
 
 ### LinkedIn Access
 
