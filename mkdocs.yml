@@ -20,6 +20,15 @@ theme:
   font:
     text: Inter
     code: Fira Code
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.footer
+    - toc.integrate
+    - content.code.annotate
+    - content.code.copy
   palette:
     - scheme: default
       primary: deep orange
@@ -33,18 +42,19 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
-  features:
-    - navigation.tabs
-    - navigation.sections
-    - toc.integrate
-    - content.code.annotate
-    - content.code.copy
-  icon:
-    repo: fontawesome/brands/github
 
 repo_url: https://github.com/AME-Consulting-Ltd/ame-docs
 repo_name: AME Docs
 edit_uri: edit/main/docs/
+
+extra:
+  social:
+    - icon: simple/linkedin
+      link: https://www.linkedin.com/company/ame-consulting-ltd
+    - icon: material/web
+      link: https://www.ame-consulting.ca/
+
+copyright: Copyright © 2024 AME Consulting Ltd.
 
 markdown_extensions:
   - admonition
@@ -53,6 +63,14 @@ markdown_extensions:
   - meta
   - toc:
       permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed
+  - pymdownx.details
 
 plugins:
   - search

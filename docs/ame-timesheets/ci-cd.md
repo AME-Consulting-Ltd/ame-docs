@@ -1,60 +1,69 @@
 # CI/CD Pipeline
 
-This page describes how the AME Timesheets project is built and deployed using GitHub Actions, Docker, Amazon ECR, and EC2.
+This page outlines the continuous integration and continuous deployment (CI/CD) process for the AME Timesheets platform.
+
+## Full CI/CD Pipeline Diagram
+
+```mermaid
+flowchart TD
+  A[Pull Request to main] --> B[GitHub Actions: build-and-push.yml]
+  B --> C[Configure AWS Credentials]
+  C --> D[Login to ECR]
+  D --> E[Build Backend Image with Build Args]
+  E --> F[Push Backend to ECR]
+  D --> G[Build Frontend Image with Build Args]
+  G --> H[Push Frontend to ECR]
+
+  I[Push to main] --> J[GitHub Actions: deploy-prod.yml]
+  J --> K[Run for each EC2 IP]
+  K --> L[SSH into EC2]
+  L --> M[Configure AWS CLI and pgpass]
+  M --> N[Login to ECR from EC2]
+  N --> O[Pull Backend Image]
+  O --> P[Stop & Remove Old Backend]
+  P --> Q[Run New Backend Container]
+  Q --> R[Copy pgpass into Container]
+  R --> S[Restart Backend]
+  S --> T[Run Migrations]
+
+  N --> U[Pull Frontend Image]
+  U --> V[Stop & Remove Old Frontend]
+  V --> W[Run New Frontend Container]
+```
+
+## Overview
+
+Our CI/CD system uses GitHub Actions to automate the building, testing, and deployment of our backend (Django) and frontend (React) services. The process involves two main workflows:
+
+1. **build-and-push.yml** – Builds Docker images and pushes them to AWS ECR when a pull request is created or updated.
+2. **deploy-prod.yml** – Deploys the latest images to our EC2 instances on every push to the `main` branch.
 
 ---
 
-## Workflow Overview
+## Step-by-Step Breakdown
 
-### Step 1: Pull Request Workflow (`build-and-push.yml`)
+### 1. Pull Request Trigger (build-and-push.yml)
 
-Triggered on: **Pull Request to `main`**
+- Trigger: Any PR targeting `main`
+- Steps:
+  - Configure AWS credentials
+  - Log in to Amazon ECR
+  - Build the backend Docker image (injecting secrets and environment variables)
+  - Build the frontend Docker image (injecting Vite-specific env vars)
+  - Push both images to the appropriate AWS ECR repositories
 
-1. **Checkout code**  
-2. **Configure AWS credentials** using GitHub secrets  
-3. **Login to Amazon ECR**
-4. **Build Docker image for backend**  
-   - Injects Django and AWS secrets via `--build-arg`
-5. **Push backend image to ECR**
-6. **Build Docker image for frontend**  
-   - Injects Vite secrets via `--build-arg`
-7. **Push frontend image to ECR**
+### 2. Main Branch Push Trigger (deploy-prod.yml)
 
----
-
-### Step 2: Production Deployment (`deploy-prod.yml`)
-
-Triggered on: **Push to `main`**
-
-1. **Matrix deploys to multiple EC2 instances**
-2. **SSH into each instance using GitHub Secrets**
-3. **Export AWS + RDS environment variables**
-4. **Authenticate with ECR from EC2**
-5. **Clean up old Docker containers, images, and volumes**
-6. **Pull latest backend image from ECR**
-7. **Stop and remove existing backend container**
-8. **Run new backend container with `.env` and `.pgpass` setup**
-9. **Run database migrations**
-10. **Pull latest frontend image**
-11. **Stop and remove existing frontend container**
-12. **Run new frontend container with Vite environment variables**
+- Trigger: Push to `main`
+- Strategy: Runs per EC2 IP
+- Steps:
+  - SSH into each EC2 instance
+  - Configure AWS CLI and PostgreSQL passwordless authentication
+  - Pull latest backend and frontend images from ECR
+  - Clean up old containers and volumes
+  - Run new containers
+  - Run Django migrations for backend
 
 ---
 
-## Summary
-
-- On **PRs**, Docker images for backend and frontend are built and pushed to **Amazon ECR**.
-- On **merge to `main`**, EC2 instances pull the images and run them.
-- Django migrations are run automatically during deploy.
-
----
-
-## AWS Services Used
-
-- **ECR** – Docker image registry
-- **EC2** – Hosts backend and frontend containers
-- **RDS (PostgreSQL)** – Backend database
-
----
-
-Deployment is fully automated and can scale to additional EC2 instances via the matrix strategy.
+If you notice anything outdated or missing, please open a PR or message in the internal dev channel.
