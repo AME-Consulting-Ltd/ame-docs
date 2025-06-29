@@ -1,0 +1,63 @@
+site_name: AME Consulting Documentation
+site_url: https://sitename.example
+
+nav:
+  - Home: index.md
+  - AME Timesheets:
+      - AWS Infrastructure: ame-timesheets/aws-infra.md
+      - CI/CD Pipeline: ame-timesheets/ci-cd.md
+      - Backend (Django): ame-timesheets/backend.md
+      - Frontend (React): ame-timesheets/frontend.md
+  - How to Use MkDocs & Contribute:
+      - Getting Started: how-to/contributing.md
+  - Onboarding:
+      - Environment Setup: onboarding/setup.md
+      - Access & Permissions: onboarding/access.md
+      - Project Overview: onboarding/projects.md
+
+theme:
+  name: material
+  font:
+    text: Inter
+    code: Fira Code
+  palette:
+    - scheme: default
+      primary: deep orange
+      accent: orange
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep orange
+      accent: orange
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - content.code.annotate
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github
+
+repo_url: https://github.com/AME-Consulting-Ltd/ame-docs
+repo_name: AME Docs
+edit_uri: edit/main/docs/
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - glightbox
+  - git-revision-date-localized:
+      fallback_to_build_date: true
+  - section-index
+  - minify
