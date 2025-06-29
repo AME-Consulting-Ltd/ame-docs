@@ -97,17 +97,17 @@ The final site will be generated in the `site/` folder.
 
 ---
 
-## 7. Deployment (Under Construction)
+## 7. Deployment 
 
-This site will be hosted via **GitHub Pages** once it's finalized.
+Our GitHub Actions workflow automatically deploys on every push to main.
 
-In the future, updates will be pushed to the `gh-pages` branch via:
+Nothing to do manually — just commit your changes, push, and GitHub Pages will update.
+
+If needed for manual deployment:
 
 ```sh
-mkdocs gh-deploy
+mkdocs gh-deploy --force
 ```
-
-For now, deployment details are under construction.
 
 ---
 
