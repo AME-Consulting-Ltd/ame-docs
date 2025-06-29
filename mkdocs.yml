@@ -49,7 +49,7 @@ edit_uri: edit/main/docs/
 
 extra:
   social:
-    - icon: simple/linkedin
+    - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/company/ame-consulting-ltd
     - icon: material/web
       link: https://www.ame-consulting.ca/
