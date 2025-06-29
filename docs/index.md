@@ -23,6 +23,8 @@ Our mission is to deliver fit-for-purpose, first-principle engineering backed by
 
 [Visit our website](https://www.ame-consulting.ca/)
 
+[Follow us on LinkedIn](https://www.linkedin.com/company/ame-consulting-ltd)
+
 ---
 
 ## Developer Corner
